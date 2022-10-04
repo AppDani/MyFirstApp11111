@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "634925085617",
+    "project_id": "shoppinglist-6ebd0",
+    "storage_bucket": "shoppinglist-6ebd0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634925085617:android:dd7adff26151ffdf4a8390",
+        "android_client_info": {
+          "package_name": "com.danielarog.myfirstapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "634925085617-gs85oace0nrb6qirc5kmd62r94c8k4l4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.danielarog.myfirstapp",
+            "certificate_hash": "5ca541cd20371b955a3cf4d4e27052557ced335e"
+          }
+        },
+        {
+          "client_id": "634925085617-ns3dla3cutm426hmbk37pvla0h0dksmq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBM8ojI8xDMjG8Ri53bRMozrECL4YzAzj0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "634925085617-ns3dla3cutm426hmbk37pvla0h0dksmq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
