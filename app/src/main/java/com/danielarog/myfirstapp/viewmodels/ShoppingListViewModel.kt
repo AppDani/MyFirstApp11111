@@ -1,35 +1,51 @@
 package com.danielarog.myfirstapp.viewmodels
 
-import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.danielarog.myfirstapp.database.ShoppingRepository
+import com.danielarog.myfirstapp.ProductCategory
+import com.danielarog.myfirstapp.ProductRepository
 import com.danielarog.myfirstapp.models.ShoppingItem
-import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class ShoppingListViewModel : ViewModel() {
-    private lateinit var shoppingRepository: ShoppingRepository
-    lateinit var shoppingItemsLiveData : LiveData<List<ShoppingItem>>
 
-    fun initializeRepo(context:Context) {
-        shoppingRepository = ShoppingRepository(context)
-        shoppingItemsLiveData = shoppingRepository.shoppingItemsLiveData
+    private var _shoppingItemsLiveData: MutableLiveData<List<ShoppingItem>> = MutableLiveData()
+    var shoppingItemsLiveData: LiveData<List<ShoppingItem>> = _shoppingItemsLiveData
+
+    private var _shoppingItemsSubCategoryLiveData: MutableLiveData<List<Pair<ProductCategory,ProductCategory.SubCategory>>> = MutableLiveData()
+    var shoppingItemsSubCategoryLiveData: LiveData<List<Pair<ProductCategory,ProductCategory.SubCategory>>> = _shoppingItemsSubCategoryLiveData
+
+
+    private var _exceptionLiveData: MutableLiveData<Exception> = MutableLiveData()
+    var exceptionLiveData: LiveData<Exception> = _exceptionLiveData
+
+
+    init {
+        // DEFAULT
+        changeCategory(ProductCategory.SHOES)
+
+
     }
 
-    fun insertItem(item:ShoppingItem) {
-        viewModelScope.launch {
-            shoppingRepository.insertItem(item)
+    fun changeCategory(category: ProductCategory) {
+        ProductRepository.listenAllSubCategories(category) { subCategories, error ->
+            if (subCategories != null)
+                _shoppingItemsSubCategoryLiveData.postValue(subCategories)
+            else if (error != null)
+                _exceptionLiveData.postValue(error)
         }
     }
-    fun updateItem(item:ShoppingItem) {
-        viewModelScope.launch {
-            shoppingRepository.updateItem(item)
-        }
-    }
-    fun deleteItem(item:ShoppingItem) {
-        viewModelScope.launch {
-            shoppingRepository.deleteItem(item)
+
+    fun changeSubCategory(categoryPair: Pair<ProductCategory,ProductCategory.SubCategory>) {
+        ProductRepository.listenAllCategoryProducts(
+            categoryPair.first, /* category */
+            categoryPair.second /* sub category*/) {
+                products, error ->
+            if (products != null)
+                _shoppingItemsLiveData.postValue(products)
+            else if (error != null)
+                _exceptionLiveData.postValue(error)
         }
     }
 

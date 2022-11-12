@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/shoppingListFragment"
-        android:name="com.danielarog.myfirstapp.ShoppingListFragment"
+        android:name="com.danielarog.myfirstapp.fragments.main.ItemFeedFragment"
         android:label="fragment_shopping_list"
-        tools:layout="@layout/fragment_shopping_list" />
+        tools:layout="@layout/fragment_item_feed" />
 </navigation>

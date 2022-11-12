@@ -6,11 +6,18 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "shoppingItems")
 data class ShoppingItem(
-    @PrimaryKey(autoGenerate = true) val id: Long,
-    val itemName:String,
-    val type:String,
-    val date:String,
-    val price:String,
-    val image:String="",
-    val comments:String ="",
-)
+    @PrimaryKey val id: String,
+    var itemName: String,
+    var gender: String,
+    var category: String,
+    var subCategory: String,
+    var condition: String,
+    var location: String,
+    var publisherName: String,
+    var date: String,
+    var price: String,
+    var image: String = "",
+    var description: String = "",
+) {
+    constructor() : this("", "","", "", "", "", "", "", "", "", "")
+}
