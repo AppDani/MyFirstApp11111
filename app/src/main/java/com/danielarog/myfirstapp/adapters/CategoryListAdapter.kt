@@ -1,11 +1,11 @@
-package com.danielarog.myfirstapp
+package com.danielarog.myfirstapp.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.danielarog.myfirstapp.R
 import com.danielarog.myfirstapp.models.Category
 
 
@@ -18,7 +18,7 @@ class CategoryListAdapter(val categoryClicked : (category:Category) -> Unit) : R
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.prodcut_category_col,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.product_category_col,parent,false)
         return CategoryViewHolder(view)
     }
 

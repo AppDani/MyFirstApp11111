@@ -26,11 +26,9 @@ class SplashActivity : AppCompatActivity() {
         val timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
-                /*if(FirebaseAuth.getInstance().currentUser !=null) {
-                    startActivity(Intent(this@SplashActivity,MainActivity::class.java))
-                    return
-                }*/
+
                 startActivity(Intent(this@SplashActivity,AuthActivity::class.java))
+                finish()
             }
         },3000)
     }

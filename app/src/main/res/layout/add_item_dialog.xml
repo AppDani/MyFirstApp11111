@@ -5,21 +5,37 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:layout_marginVertical="32dp"
+
         android:gravity="center"
         android:orientation="vertical">
 
-
+        <ImageView
+            android:padding="8dp"
+            android:id="@+id/dialog_item_photo_iv"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/jewelry"/>
         <EditText
             android:id="@+id/dialog_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter Item Name" />
+
+        <Spinner
+            android:id="@+id/dialog_item_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            tools:listitem="@android:layout/simple_spinner_item" />
 
         <Spinner
             android:id="@+id/dialog_item_category"
@@ -30,6 +46,13 @@
 
         <Spinner
             android:id="@+id/dialog_item_subCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            tools:listitem="@android:layout/simple_spinner_item" />
+
+        <Spinner
+            android:id="@+id/dialog_item_condition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp"
@@ -47,6 +70,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter Item Description" />
+
+        <EditText
+            android:id="@+id/dialog_item_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Size (S, M,L,36..)" />
+
+
+
+
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -68,6 +101,15 @@
                 android:src="@drawable/plus" />
         </LinearLayout>
 
+        <GridLayout
+            android:id="@+id/imageGallery_addItem"
+            android:layout_width="match_parent"
+            android:layout_height="75dp" >
+            <ImageView android:visibility="gone" android:id="@+id/imageGallery_Item1" android:layout_height="75dp" android:layout_width="100dp"/>
+            <ImageView android:visibility="gone" android:id="@+id/imageGallery_Item2" android:layout_height="75dp" android:layout_width="100dp"/>
+            <ImageView android:visibility="gone" android:id="@+id/imageGallery_Item3" android:layout_height="75dp" android:layout_width="100dp"/>
+        </GridLayout>
+
         <Button
             android:id="@+id/dialog_item_submit"
             android:layout_width="match_parent"
@@ -77,5 +119,7 @@
             android:text="Add Item" />
 
     </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
 </LinearLayout>
 

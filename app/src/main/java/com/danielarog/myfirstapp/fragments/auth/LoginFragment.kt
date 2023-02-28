@@ -7,9 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.danielarog.myfirstapp.R
 import com.danielarog.myfirstapp.activities.MainActivity
 import com.danielarog.myfirstapp.databinding.FragmentLoginBinding
@@ -67,7 +67,10 @@ class LoginFragment : BaseFragment() {
              val appUser = viewModel.getUser()
              dismissLoading()
              if (appUser == null) {
-                 findNavController(this@LoginFragment).navigate(R.id.action_loginFragment_to_newProfileFragment)
+                 navigate(
+                     R.id.action_loginFragment_to_newProfileFragment,
+                     bundleOf(Pair(PROFILE_CREATION_MODE, PROFILE_CREATE))
+                 )
              } else {
                  startActivity(Intent(this@LoginFragment.requireContext(), MainActivity::class.java))
                  this@LoginFragment.requireActivity().finish()

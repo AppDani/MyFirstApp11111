@@ -1,7 +1,10 @@
 package com.danielarog.myfirstapp.models
 
-import com.danielarog.myfirstapp.ProductCategory
 import com.danielarog.myfirstapp.R
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 data class Category(
     val category: ProductCategory,
@@ -20,6 +23,13 @@ data class Category(
             categories.add(Category(ProductCategory.JEWELERY, R.drawable.jewelry))
             categories.add(Category(ProductCategory.ACCESSORIES, R.drawable.accesories))
             return categories
+        }
+
+        fun pick3Categories() : List<Category> {
+            val categories = categoryList()
+            val side_a = Random(1).nextInt(categories.indices)
+            val side_b = Random(1).nextInt(1 until categories.size)
+           return categoryList().subList(min(side_a,side_b), max(side_a,side_b))
         }
         fun subCategoryList() : List<ProductCategory.SubCategory> {
             return ProductCategory.SubCategory.values().toList()

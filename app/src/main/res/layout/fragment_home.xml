@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center|top"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="42dp"
+        android:text="Takes a second to sell"
+        android:textAlignment="textStart"
+        android:textColor="@color/grey"
+        android:textSize="32sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:text="Second Hand"
+        android:textAlignment="textEnd"
+        android:textColor="@color/grey"
+        android:textSize="24sp" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Top Sellers"
+        android:textAlignment="textStart"
+        android:textColor="@color/grey"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_grey" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:id="@+id/rvTopSeller"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/top_seller_item" />
+
+</LinearLayout>

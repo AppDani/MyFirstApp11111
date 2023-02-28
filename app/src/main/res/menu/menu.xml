@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_woman" android:icon="@drawable/profile" android:title="@string/woman_categories">
+        <menu>
+            <item android:title="Shirts" android:id="@+id/Wcategory_shirts" android:icon="@drawable/shirt" />
+            <item android:title="Pants" android:id="@+id/Wcategory_pants" android:icon="@drawable/pants" />
+            <item android:title="Skirts" android:id="@+id/Wcategory_skirts" android:icon="@drawable/skirt" />
+            <item android:title="Dresses" android:id="@+id/Wcategory_dresses" android:icon="@drawable/dress" />
+            <item android:title="Jackets" android:id="@+id/Wcategory_jackets" android:icon="@drawable/jacket"/>
+            <item android:title="Swim" android:id="@+id/Wcategory_swim" android:icon="@drawable/swimsuits" />
+            <item android:title="Shoes" android:id="@+id/Wcategory_shoes" android:icon="@drawable/shoes"/>
+            <item android:title="Jewelery" android:id="@+id/Wcategory_jewelery" android:icon="@drawable/jewelry" />
+            <item android:title="Accessorise" android:id="@+id/Wcategory_accesorise" android:icon="@drawable/accesories"/>
+        </menu>
+</item>
+
+    <item android:id="@+id/menu_men" android:icon="@drawable/ic_baseline_image_search_24" android:title="@string/men_categories">
+    <menu>
+        <item android:title="Shirts" android:id="@+id/Mcategory_shirts" android:icon="@drawable/shirt"/>
+        <item android:title="Pants" android:id="@+id/Mcategory_pants" android:icon="@drawable/pants"/>
+        <item android:title="Jackets" android:id="@+id/Mcategory_jackets" android:icon="@drawable/jacket"/>
+        <item android:title="Swim" android:id="@+id/Mcategory_swim" android:icon="@drawable/swimsuits"/>
+        <item android:title="Shoes" android:id="@+id/Mcategory_shoes" android:icon="@drawable/shoes"/>
+        <item android:title="Accessorise" android:id="@+id/Mcategory_accesorise" android:icon="@drawable/accesories"/>
+    </menu>
+    </item>
+
+    <item android:title="@string/account">
+        <menu>
+            <item android:title="@string/profile" android:icon="@drawable/ic_baseline_image_search_24" android:id="@+id/menu_profile"/>
+            <item android:title="@string/my_products" android:icon="@drawable/ic_baseline_image_search_24" android:id="@+id/menu_my_products"/>
+            <item android:title="@string/favorites" android:icon="@drawable/ic_baseline_favorite_24" android:id="@+id/favoriteProductsFragment"/>
+            <item android:title="@string/logout" android:icon="@drawable/ic_baseline_image_search_24" android:id="@+id/menu_logout"/>
+        </menu>
+    </item>
+
+</menu>

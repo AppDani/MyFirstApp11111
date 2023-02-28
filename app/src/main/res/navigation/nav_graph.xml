@@ -3,11 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/shoppingListFragment">
+    app:startDestination="@id/homeFragment">
+
 
     <fragment
-        android:id="@+id/shoppingListFragment"
-        android:name="com.danielarog.myfirstapp.fragments.main.ItemFeedFragment"
-        android:label="fragment_shopping_list"
-        tools:layout="@layout/fragment_item_feed" />
+        android:id="@+id/itemListFragment"
+        android:name="com.danielarog.myfirstapp.fragments.main.ItemListFragment"
+        android:label="Product Feed"
+        tools:layout="@layout/fragment_item_list" >
+        <action
+            android:id="@+id/action_itemListFragment_to_itemDetailsFragment"
+            app:destination="@id/itemDetailsFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.danielarog.myfirstapp.fragments.main.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" >
+
+        <action
+            android:id="@+id/action_homeFragment_to_itemListFragment"
+            app:destination="@id/itemListFragment" />
+
+
+        <action
+            android:id="@+id/action_homeFragment_to_favoritesFragment"
+            app:destination="@id/favoriteProductsFragment" />
+    </fragment>
+
+
+
+    <fragment
+        android:id="@+id/itemDetailsFragment"
+        android:name="com.danielarog.myfirstapp.fragments.main.ItemDetailsFragment"
+        android:label="ItemListFragment"
+        tools:layout="@layout/item_page" />
+    <fragment
+        android:id="@+id/favoriteProductsFragment"
+        tools:layout="@layout/fragment_favorites"
+        android:name="com.danielarog.myfirstapp.fragments.main.FavoriteProductsFragment"
+        android:label="FavoriteProductsFragment" />
+
+
 </navigation>

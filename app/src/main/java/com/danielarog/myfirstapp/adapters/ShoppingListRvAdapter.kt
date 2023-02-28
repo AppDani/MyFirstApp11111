@@ -1,4 +1,4 @@
-package com.danielarog.myfirstapp
+package com.danielarog.myfirstapp.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.danielarog.myfirstapp.R
 import com.danielarog.myfirstapp.models.ShoppingItem
 import com.squareup.picasso.Picasso
 
@@ -17,6 +18,8 @@ class ShoppingListRvAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val itemNameTv: TextView = view.findViewById(R.id.productName_itemRow)
         private val itemPriceTv: TextView = view.findViewById(R.id.productPrice_itemRow)
+
+        private val itemSizeTv: TextView = view.findViewById(R.id.productSize_itemRow)
         private val itemDateTv: TextView = view.findViewById(R.id.productPubDate_itemRow)
         private val itemLocationTv: TextView = view.findViewById(R.id.productLocation_itemRow)
         private val itemPubNameTv: TextView = view.findViewById(R.id.productPubName_itemRow)
@@ -26,8 +29,17 @@ class ShoppingListRvAdapter(
             itemPriceTv.text = "${item.price}$"
             itemDateTv.text = "Published at ${item.date}"
             itemLocationTv.text = item.location
+            itemSizeTv.text = "L"
             itemPubNameTv.text = item.publisherName
-            Picasso.get().load(item.image).into(itemImageIv)
+
+            item.image?.let {
+                if(it.isEmpty()) {
+                    itemImageIv.setImageResource(R.drawable.noimage)
+                } else Picasso.get().load(item.image).into(itemImageIv)
+            } ?: run {
+                itemImageIv.setImageResource(R.drawable.noimage)
+            }
+
             itemView.setOnClickListener {
                 viewItem.invoke()
             }
