@@ -11,8 +11,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.danielarog.myfirstapp.R
@@ -30,9 +32,6 @@ class ItemListFragment : BaseFragment() {
     private var _binding: FragmentItemListBinding? = null
     val binding get() = _binding!!
     private lateinit var viewModel: ShoppingListViewModel
-    private val productRecyclerView: RecyclerView by lazy {
-        binding.itemListRv
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -47,10 +46,6 @@ class ItemListFragment : BaseFragment() {
         _binding = FragmentItemListBinding.inflate(inflater)
         viewModel = ViewModelProvider(this)[ShoppingListViewModel::class.java]
         return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -80,7 +75,8 @@ class ItemListFragment : BaseFragment() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        productRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val  productRecyclerView = binding.itemListRv
+        productRecyclerView.layoutManager = GridLayoutManager(requireContext(),2)
 
         if (savedInstanceState != null) {
            val scrollPos = savedInstanceState.getInt("scroll_pos")
@@ -89,14 +85,12 @@ class ItemListFragment : BaseFragment() {
             productRecyclerView.adapter =
                 ShoppingListRvAdapter(dataList!!.toMutableList()) { shoppingItem ->
                     val shoppingItemAsJson = Gson().toJson(shoppingItem)
-                    findNavController()
+                    Navigation.findNavController(binding.root)
                         .navigate(
                             R.id.action_itemListFragment_to_itemDetailsFragment,
                             bundleOf(
                                 Pair(ITEM_DETAILS_ARG, shoppingItemAsJson)
-                            ), // Item details objet
-                            navOptions = NavOptions.Builder()
-                                .build()
+                            )
                         )
                 }
             binding.itemListRv.scrollToPosition(scrollPos)
@@ -105,24 +99,22 @@ class ItemListFragment : BaseFragment() {
                 productRecyclerView.adapter =
                     ShoppingListRvAdapter(it.toMutableList()) { shoppingItem ->
                         val shoppingItemAsJson = Gson().toJson(shoppingItem)
-                        findNavController()
+                        Navigation.findNavController(binding.root)
                             .navigate(
                                 R.id.action_itemListFragment_to_itemDetailsFragment,
                                 bundleOf(
                                     Pair(ITEM_DETAILS_ARG, shoppingItemAsJson)
-                                ), // Item details objet
-                                navOptions = NavOptions.Builder()
-                                    .build()
+                                )
                             )
                     }
             }
-            val category = arguments?.getString("category") ?: "PANTS"
+           /* val category = arguments?.getString("category") ?: "PANTS"
             val gender = arguments?.getString("gender")?.lowercase() ?: "female"
             changeCategory(
                 ProductCategory.valueOf(category),
                 ProductCategory.SubCategory.JEANS,
                 gender
-            )
+            )*/
         }
 
     }

@@ -13,6 +13,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.danielarog.myfirstapp.*
@@ -74,7 +75,7 @@ class ItemFeedFragment : BaseFragment() {
         dev.setDrawable(ResourcesCompat.getDrawable(resources, R.drawable.devidor, null)!!)
         productCategoryRv.addItemDecoration(dev)
         productCategoryRv.adapter = adapter
-        productRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        productRecyclerView.layoutManager = GridLayoutManager(requireContext(),2)
 
         observeAppProducts()
         observeExceptions()

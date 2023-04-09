@@ -3,6 +3,7 @@ package com.danielarog.myfirstapp.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.danielarog.myfirstapp.models.AppUser
 import com.danielarog.myfirstapp.models.FavoriteItem
 import com.danielarog.myfirstapp.models.ProductCategory
 import com.danielarog.myfirstapp.models.ShoppingItem
@@ -22,7 +23,17 @@ class MainViewModel : ViewModel() {
     val favoriteProducts: LiveData<List<ShoppingItem>> = _favoriteProducts
     var favoritesListener: ListenerRegistration? = null
 
+    private val _userLive: MutableLiveData<AppUser> = MutableLiveData()
+    val userLive: LiveData<AppUser> get() = _userLive
+    private var _userListener: ListenerRegistration? = null
+    private val _exceptionsLiveData: MutableLiveData<Exception> = MutableLiveData()
+    val exceptionsLiveData: LiveData<Exception> get() = _exceptionsLiveData
+
     init {
+        _userListener = UserRepository.listenToUser(
+            _userLive,
+            _exceptionsLiveData
+        )
         favoritesListener = UserRepository.listenFavorites(_favorites)
     }
 
@@ -97,6 +108,8 @@ class MainViewModel : ViewModel() {
         super.onCleared()
         favoritesListener?.remove()
         favoritesListener = null
+        _userListener?.remove()
+        _userListener = null
     }
 
 }

@@ -59,6 +59,10 @@ class LoginFragment : BaseFragment() {
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
             .build()
+
+        binding.signInBtn.setOnClickListener {
+            signInLauncher.launch(signInIntent)
+        }
         signInLauncher.launch(signInIntent)
     }
 
@@ -90,6 +94,7 @@ class LoginFragment : BaseFragment() {
             showLoading("Loading..")
             determineMainRoute()
         } else {
+
             //login failed
         }
     }

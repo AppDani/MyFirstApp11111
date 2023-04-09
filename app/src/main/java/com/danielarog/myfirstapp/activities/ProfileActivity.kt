@@ -24,6 +24,7 @@ import com.danielarog.myfirstapp.fragments.main.ITEM_DETAILS_ARG
 import com.danielarog.myfirstapp.fragments.main.ItemDetailsFragment
 import com.danielarog.myfirstapp.models.AppUser
 import com.danielarog.myfirstapp.models.ShoppingItem
+import com.danielarog.myfirstapp.viewmodels.MainViewModel
 import com.danielarog.myfirstapp.viewmodels.ProfileViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -35,16 +36,19 @@ class ProfileActivity : AppCompatActivity(), ProfileItemClickListener {
     lateinit var binding: ActivityProfileBinding
     lateinit var profileItemsListAdapter: ProfileItemsListAdapter
     private val profileItemsRecyclerView: RecyclerView by lazy { binding.profileItemsRv }
-
+    private lateinit var user: AppUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        user = Gson().fromJson(
+            intent.getStringExtra("user"),
+            AppUser::class.java
+        )
         viewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
-
         attachEditProductAction()
         attachAddProductAction()
-        observeUserDetails()
+        updateUIUserDetails()
         observeAppProducts()
 
     }
@@ -54,7 +58,7 @@ class ProfileActivity : AppCompatActivity(), ProfileItemClickListener {
             val dialog = FragmentDialog(fragmentProvider = { dialog ->
 
                 FragmentDialogArgs(
-                    ProductActionsFragment(viewModel) { submitted ->
+                    ProductActionsFragment(viewModel, user) { submitted ->
                         dialog.dismiss()
                         dialog.onClose?.invoke(submitted)
                         dialog.childFragmentManager.clearBackStack("AddItem")
@@ -74,7 +78,7 @@ class ProfileActivity : AppCompatActivity(), ProfileItemClickListener {
             val dialog = FragmentDialog(fragmentProvider = { dialog ->
                 val bundleForFragment = bundleOf(
                     Pair(PROFILE_CREATION_MODE, PROFILE_EDIT),
-                    Pair(PROFILE_EDIT_USER, Gson().toJson(viewModel.userLive.value))
+                    Pair(PROFILE_EDIT_USER, Gson().toJson(user))
                 )
                 FragmentDialogArgs(
                     NewProfileFragment { submitted ->
@@ -100,23 +104,23 @@ class ProfileActivity : AppCompatActivity(), ProfileItemClickListener {
         viewModel.userProductsLiveData.observe(this, userProductsObserver)
     }
 
-    private fun observeUserDetails() {
-        val userObserver = Observer<AppUser> { user ->
-            binding.profileSellerName.text = user.name
-            binding.profileSellerRating.text = "Rating: ${user.rating}"
-            binding.profileSellerCity.text = "Location: ${user.address_city}"
-            if (user.image.isNotBlank())
-                Picasso.get().load(user.image).into(binding.sellerProfileImage)
-        }
-        viewModel.userLive.observe(this, userObserver)
-
+    private fun updateUIUserDetails() {
+        binding.profileSellerName.text = user.name
+        binding.profileSellerRating.text = "Rating: ${user.rating}"
+        binding.profileSellerCity.text = "Location: ${user.address_city}"
+        if (user.image.isNotBlank())
+            Picasso.get().load(user.image).into(binding.sellerProfileImage)
     }
 
     private fun editItem(item: ShoppingItem) {
         val dialog = FragmentDialog(fragmentProvider = { dialog ->
 
             FragmentDialogArgs(
-                ProductActionsFragment(viewModel, editItem = item) { submitted ->
+                ProductActionsFragment(
+                    viewModel,
+                    editItem = item,
+                    user = user
+                ) { submitted ->
                     dialog.dismiss()
                     dialog.onClose?.invoke(submitted)
                     dialog.childFragmentManager.clearBackStack("AddItem")

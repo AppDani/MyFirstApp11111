@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import com.danielarog.myfirstapp.databinding.AddItemDialogBinding
 import com.danielarog.myfirstapp.fragments.*
 import com.danielarog.myfirstapp.models.*
+import com.danielarog.myfirstapp.viewmodels.MainViewModel
 import com.danielarog.myfirstapp.viewmodels.ProfileViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
@@ -28,7 +29,10 @@ data class ProductImageSelection(
     var imageByteArray: ByteArray? = null
 )
 
-class ProductActionsFragment(var viewModel: ProfileViewModel?) : BaseFragment(), PictureConsumer {
+class ProductActionsFragment(
+    var viewModel: ProfileViewModel?,
+    val user: AppUser?
+) : BaseFragment(), PictureConsumer {
     var mode: String = "add"
     private var _binding: AddItemDialogBinding? = null
     private val binding: AddItemDialogBinding by lazy { _binding!! }
@@ -58,16 +62,18 @@ class ProductActionsFragment(var viewModel: ProfileViewModel?) : BaseFragment(),
 
     constructor(
         viewModel: ProfileViewModel?,
+        user:AppUser?,
         onClose: (Boolean) -> Unit
-    ) : this(viewModel) {
+    ) : this(viewModel, user) {
         this.onClose = onClose
     }
 
     constructor(
         viewModel: ProfileViewModel?,
         editItem: ShoppingItem,
+        user: AppUser?,
         onClose: (Boolean) -> Unit
-    ) : this(viewModel) {
+    ) : this(viewModel, user) {
         this._product = editItem
         this.onClose = onClose
         this.mode = "edit"
@@ -167,15 +173,24 @@ class ProductActionsFragment(var viewModel: ProfileViewModel?) : BaseFragment(),
 
     private fun submitProduct() {
         lifecycleScope.launch {
-            if (isEditMode()) {
-                viewModel?.editItem(product, imageUri, imageByteArray)
-                toast("Successfully saved changes")
-            } else {
-                viewModel?.addItem(product, imageUri, imageByteArray, additionalImagesArray)
-                toast("Successfully added item")
+            user?.let { user ->
+                if (isEditMode()) {
+                    viewModel?.editItem(user, product, imageUri, imageByteArray)
+                    toast("Successfully saved changes")
+                } else {
+                    viewModel?.addItem(
+                        user,
+                        product,
+                        imageUri,
+                        imageByteArray,
+                        additionalImagesArray
+                    )
+                    toast("Successfully added item")
+                }
+                dismissLoading()
+                onClose.invoke(true) /* success */
             }
-            dismissLoading()
-            onClose.invoke(true) /* success */
+
         }
     }
 
@@ -242,8 +257,8 @@ class ProductActionsFragment(var viewModel: ProfileViewModel?) : BaseFragment(),
     private fun createSpinnerCategory() {
         val binding = _binding!!
         val spinner = binding.dialogItemCategory
-        val categoryList = Category.categoryList().map {
-                category -> category.category.value.lowercase()
+        val categoryList = Category.categoryList().map { category ->
+            category.category.value.lowercase()
         }
         val adapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categoryList)
@@ -257,6 +272,7 @@ class ProductActionsFragment(var viewModel: ProfileViewModel?) : BaseFragment(),
                 subCategoryList = categoryEn.getSubCategories()
                 createSpinnerSubcategory()
             }
+
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
     }
@@ -316,15 +332,15 @@ class ProductActionsFragment(var viewModel: ProfileViewModel?) : BaseFragment(),
                         binding.dialogItemPhotoIv.setImageURI(it)
                         imageUri = it
                     }
-                    1 ->  {
+                    1 -> {
                         binding.imageGalleryItem1.setImageURI(it)
                         additionalImagesArray[0].imageUri = it
                     }
-                    2 ->  {
+                    2 -> {
                         binding.imageGalleryItem2.setImageURI(it)
                         additionalImagesArray[1].imageUri = it
                     }
-                    3 ->  {
+                    3 -> {
                         binding.imageGalleryItem3.setImageURI(it)
                         additionalImagesArray[2].imageUri = it
                     }

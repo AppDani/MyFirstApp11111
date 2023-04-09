@@ -20,15 +20,11 @@ class ShoppingListRvAdapter(
         private val itemPriceTv: TextView = view.findViewById(R.id.productPrice_itemRow)
 
         private val itemSizeTv: TextView = view.findViewById(R.id.productSize_itemRow)
-        private val itemDateTv: TextView = view.findViewById(R.id.productPubDate_itemRow)
-        private val itemLocationTv: TextView = view.findViewById(R.id.productLocation_itemRow)
         private val itemPubNameTv: TextView = view.findViewById(R.id.productPubName_itemRow)
         private val itemImageIv: ImageView = view.findViewById(R.id.productImage_itemRow)
         fun bind(item: ShoppingItem, viewItem: () -> Unit) {
             itemNameTv.text = item.itemName
             itemPriceTv.text = "${item.price}$"
-            itemDateTv.text = "Published at ${item.date}"
-            itemLocationTv.text = item.location
             itemSizeTv.text = "L"
             itemPubNameTv.text = item.publisherName
 

@@ -1,10 +1,10 @@
 package com.danielarog.myfirstapp.models
 
-class ChatRoom(
+data class ChatRoom(
     val roomId:String,
     val userId1:String,
     val userId2:String,
-    val messages:List<ChatMessage>
+    val messages:MutableList<ChatMessage>
 ) {
-    constructor() : this("","","", listOf())
+    constructor() : this("","","", mutableListOf())
 }

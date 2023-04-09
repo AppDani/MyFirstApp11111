@@ -4,17 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.NotificationCompat.getExtras
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.danielarog.myfirstapp.R
+import com.danielarog.myfirstapp.activities.MainActivity
 import com.danielarog.myfirstapp.databinding.ItemPageBinding
 import com.danielarog.myfirstapp.fragments.BaseFragment
 import com.danielarog.myfirstapp.models.ShoppingItem
 import com.danielarog.myfirstapp.repositories.REQUEST_EXISTS
 import com.danielarog.myfirstapp.repositories.SUCCESS
 import com.danielarog.myfirstapp.repositories.USER_NOT_LOGGED
-import com.danielarog.myfirstapp.repositories.UserRepository
+import com.danielarog.myfirstapp.viewmodels.ChatViewModel
 import com.danielarog.myfirstapp.viewmodels.MainViewModel
 import com.danielarog.myfirstapp.viewmodels.ProductRequestsViewModel
 import com.google.gson.Gson
@@ -31,6 +32,7 @@ class ItemDetailsFragment : BaseFragment {
     private var _binding: ItemPageBinding? = null
     val binding: ItemPageBinding get() = _binding!!
     private lateinit var viewModel: ProductRequestsViewModel
+    private lateinit var chatsViewModel: ChatViewModel
     private lateinit var mainViewModel: MainViewModel
 
     private lateinit var onClose: (Boolean) -> Unit
@@ -42,6 +44,7 @@ class ItemDetailsFragment : BaseFragment {
         savedInstanceState: Bundle?
     ): View {
         _binding = ItemPageBinding.inflate(inflater)
+        chatsViewModel = ViewModelProvider(requireActivity())[ChatViewModel::class.java]
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         viewModel = ViewModelProvider(requireActivity())[ProductRequestsViewModel::class.java]
         return binding.root
@@ -73,6 +76,19 @@ class ItemDetailsFragment : BaseFragment {
             it.isEnabled = false
             viewModel.makeRequest(item.publisherId!!, item.id!!)
         }
+        binding.chatBtn.setOnClickListener {
+
+            mainViewModel.userLive.value?.let { customer ->
+                showLoading("Starting chat with seller..")
+                chatsViewModel.startChatWithForItem(customer, item) {
+                    dismissLoading()
+                    val act = requireActivity() as MainActivity
+                    act.navigateUpTo(
+                        R.id.action_homeFragment_to_chatRoomsFragment
+                    )
+                }
+            }
+        }
 
         if (mainViewModel.isFavorite(item.id!!)) {
             binding.itemLikeBtn.setImageResource(R.drawable.ic_baseline_favorite_24)
@@ -100,14 +116,13 @@ class ItemDetailsFragment : BaseFragment {
 
         binding.itemLikeBtn.setOnClickListener {
             if (mainViewModel.isFavorite(product.id!!)) {
-                println("Favorite removed")
+
                 mainViewModel.removeProductToFavorites(
                     product.id,
                     product.category!!,
                     product.subCategory!!
                 )
             } else {
-                println("Favorite Added")
                 mainViewModel.addProductToFavorites(
                     product.id,
                     product.category!!,
@@ -141,6 +156,10 @@ class ItemDetailsFragment : BaseFragment {
         Picasso.get()
             .load(item.image)
             .into(binding.ItemImage)
+
+        (requireActivity() as AppCompatActivity)
+            .supportActionBar?.title = item.itemName
+
     }
 
 

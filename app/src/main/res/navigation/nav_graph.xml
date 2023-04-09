@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_homeFragment_to_favoritesFragment"
             app:destination="@id/favoriteProductsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_chatRoomsFragment"
+            app:destination="@id/chatRoomsFragment" />
     </fragment>
 
 
@@ -45,6 +48,20 @@
         tools:layout="@layout/fragment_favorites"
         android:name="com.danielarog.myfirstapp.fragments.main.FavoriteProductsFragment"
         android:label="FavoriteProductsFragment" />
+    <fragment
+        android:id="@+id/chatRoomsFragment"
+        tools:layout="@layout/fragment_chat_rooms"
+        android:name="com.danielarog.myfirstapp.fragments.main.chat.ChatRoomsFragment"
+        android:label="ChatRoomsFragment" >
+        <action
+            android:id="@+id/action_chatRoomsFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        tools:layout="@layout/fragment_chat"
+        android:name="com.danielarog.myfirstapp.fragments.main.chat.ChatFragment"
+        android:label="ChatFragment" />
 
 
 </navigation>

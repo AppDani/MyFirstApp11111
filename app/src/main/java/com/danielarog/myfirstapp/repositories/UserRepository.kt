@@ -34,7 +34,10 @@ object UserRepository {
     }
 
     fun listenTopSellers(liveData: MutableLiveData<List<AppUser>>) {
-        usersCollection.orderBy("rating").limit(10)
+        usersCollection
+            .orderBy("rating")
+            .whereGreaterThanOrEqualTo("rating",3)
+            .limit(10)
             .addSnapshotListener { value, _ ->
                 val users = value?.toObjects(AppUser::class.java)
                 users?.let {
@@ -44,7 +47,10 @@ object UserRepository {
     }
 
     suspend fun getUser(): AppUser? {
-        return usersCollection.document(userId)
+        return getUserById(userId)
+    }
+    suspend fun getUserById(id:String): AppUser? {
+        return usersCollection.document(id)
             .get()
             .tryAwait()?.toObject(AppUser::class.java)
     }

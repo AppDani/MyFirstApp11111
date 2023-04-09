@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.auth.LoginFragment">
 
 
-</FrameLayout>
+    <Button
+        android:drawableLeft="@drawable/googleicon"
+        android:id="@+id/signInBtn"
+        android:layout_margin="8dp"
+        android:text="Sign in with google"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/google_sign_in" />
+
+</LinearLayout>
