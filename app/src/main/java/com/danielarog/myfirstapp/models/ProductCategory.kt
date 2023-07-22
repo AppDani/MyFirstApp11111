@@ -52,8 +52,12 @@ enum class ProductCategory(val value: String) {
             ACCESSORIES -> listOf(
                 SubCategory.HATS,
                 SubCategory.SCARVES,
-                SubCategory.BAGS
-            )
+                SubCategory.BAGS,
+                SubCategory.BELTS,
+                SubCategory.SUNGLASSES
+
+
+                )
             JEWELERY -> listOf(
                 SubCategory.NECKLACES,
                 SubCategory.BRACELETS,
@@ -103,6 +107,8 @@ enum class ProductCategory(val value: String) {
         HATS("hats"),
         SCARVES("scarves"),
         BAGS("bags"),
+        BELTS("belts"),
+        SUNGLASSES("sunglasses"),
 
         NECKLACES("necklaces"),
         BRACELETS("bracelets"),

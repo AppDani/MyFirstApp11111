@@ -12,5 +12,5 @@
         android:layout_margin="16dp"
         android:columnCount="9"
         android:useDefaultMargins="true"
-        tools:listitem="@layout/sub_cateogry" />
+        tools:listitem="@layout/sub_category" />
 </LinearLayout>

@@ -24,7 +24,6 @@ import com.danielarog.myfirstapp.fragments.main.ITEM_DETAILS_ARG
 import com.danielarog.myfirstapp.fragments.main.ItemDetailsFragment
 import com.danielarog.myfirstapp.models.AppUser
 import com.danielarog.myfirstapp.models.ShoppingItem
-import com.danielarog.myfirstapp.viewmodels.MainViewModel
 import com.danielarog.myfirstapp.viewmodels.ProfileViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson

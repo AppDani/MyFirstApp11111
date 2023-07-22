@@ -3,9 +3,17 @@ package com.danielarog.myfirstapp.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
 import android.view.MenuItem
+import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHost
 
@@ -24,7 +32,6 @@ import com.google.gson.Gson
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
-    lateinit var toggle: ActionBarDrawerToggle
 
     lateinit var viewModel: MainViewModel
 
@@ -46,21 +53,74 @@ class MainActivity : AppCompatActivity() {
         val drawer = binding.drawer
         val controller =
             (supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment).navController
-        toggle = ActionBarDrawerToggle(this, drawer, R.string.close, R.string.open)
-        drawer.addDrawerListener(toggle)
-        NavigationUI.setupWithNavController(navView, controller)
-        setupActionBarWithNavController(controller, drawer)
+
+
         navView.setNavigationItemSelectedListener {
             handleMenuNavigation(it.itemId)
-            drawer.closeDrawer(GravityCompat.START)
+            drawer.closeDrawers()
             true
         }
+
+        val toolbarThing = findViewById<ConstraintLayout>(R.id.toolbar)
+        val toggleButton = toolbarThing.findViewById<ImageView>(R.id.toolbarToggle)
+
+        val backButton = toolbarThing.findViewById<ImageView>(R.id.backButtonMenu)
+
+        toggleButton.setOnClickListener {
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawers()
+            } else {
+                drawer.openDrawer(GravityCompat.START)
+                toolbarThing.animate()
+                    .translationY(-200.0f)
+                    .setDuration(100)
+                    .start()
+
+                drawer.animate()
+                    .translationY(-200.0f)
+                    .setDuration(100)
+                    .start()
+
+
+            }
+        }
+
+        drawer.addDrawerListener(object : DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
+            override fun onDrawerOpened(drawerView: View) {}
+            override fun onDrawerClosed(drawerView: View) {
+                toolbarThing.animate()
+                    .translationY(0.0f)
+                    .setDuration(100)
+                    .start()
+                drawer.animate()
+                    .translationY(0.0f)
+                    .setDuration(100)
+                    .start()
+            }
+            override fun onDrawerStateChanged(newState: Int) { }
+        })
+
+
+        backButton.setOnClickListener {
+            if(controller.previousBackStackEntry !=null)
+                controller.popBackStack()
+            if(controller.previousBackStackEntry ==null)
+                backButton.visibility = GONE
+        }
+
     }
+
 
     private fun handleMenuNavigation(menuItemID: Int) {
         val controller =
             (supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment).navController
         val bundle = Bundle()
+
+        val toolbarThing = findViewById<ConstraintLayout>(R.id.toolbar)
+        val backButton = toolbarThing.findViewById<ImageView>(R.id.backButtonMenu)
+        backButton.visibility  = VISIBLE
+
         while (controller.previousBackStackEntry != null)
             controller.popBackStack()
         when (menuItemID) {
@@ -170,14 +230,16 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onSupportNavigateUp(): Boolean {
-        return findNavController(R.id.navHost).navigateUp() || super.onSupportNavigateUp()
+        return findNavController(R.id.navHost).navigateUp() ||
+                super.onSupportNavigateUp()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (findNavController(R.id.navHost).currentDestination?.id != R.id.homeFragment) {
+        if (findNavController(R.id.navHost).currentDestination?.id
+            != R.id.homeFragment) {
             return findNavController(R.id.navHost).popBackStack()
         }
-        return toggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)
+        return super.onOptionsItemSelected(item)
     }
 
 

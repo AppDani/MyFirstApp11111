@@ -9,16 +9,12 @@ import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.danielarog.myfirstapp.*
 import com.danielarog.myfirstapp.adapters.ShoppingListRvAdapter
-import com.danielarog.myfirstapp.adapters.SubCategoryListAdapter
 import com.danielarog.myfirstapp.databinding.FragmentItemFeedBinding
 import com.danielarog.myfirstapp.fragments.BaseFragment
 import com.danielarog.myfirstapp.models.ProductCategory
@@ -76,7 +72,6 @@ class ItemFeedFragment : BaseFragment() {
         productCategoryRv.addItemDecoration(dev)
         productCategoryRv.adapter = adapter
         productRecyclerView.layoutManager = GridLayoutManager(requireContext(),2)
-
         observeAppProducts()
         observeExceptions()
     }
@@ -96,9 +91,8 @@ class ItemFeedFragment : BaseFragment() {
         }
     }
 
-    fun observeExceptions() {
+    private fun observeExceptions() {
         viewModel.exceptionLiveData.observe(viewLifecycleOwner) {
-            println(it.message)
             toast(it.message ?: "")
         }
     }

@@ -58,11 +58,12 @@ class ChatViewModel : ViewModel() {
         shoppingItem: ShoppingItem,
         onChatStarted: () -> Unit
     ) {
-        val pubId = shoppingItem.publisherId ?: return
+        val pubId = shoppingItem.publisherId ?: return onChatStarted()
         // if the pub is us, don't allow chat
         if (FirebaseAuth.getInstance().currentUser?.uid == pubId)
             return run {
                 _exceptionsLiveData.postValue(java.lang.Exception("You can not start a chat with your self!"))
+                onChatStarted()
             }
         viewModelScope.launch {
             UserRepository.getUserById(pubId)?.let { seller ->

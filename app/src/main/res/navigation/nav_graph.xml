@@ -34,6 +34,9 @@
         <action
             android:id="@+id/action_homeFragment_to_chatRoomsFragment"
             app:destination="@id/chatRoomsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_itemListPerPublisher"
+            app:destination="@id/itemListPerPublisher" />
     </fragment>
 
 
@@ -62,6 +65,15 @@
         tools:layout="@layout/fragment_chat"
         android:name="com.danielarog.myfirstapp.fragments.main.chat.ChatFragment"
         android:label="ChatFragment" />
+    <fragment
+        tools:layout="@layout/fragment_publisher_item_list"
+        android:id="@+id/itemListPerPublisher"
+        android:name="com.danielarog.myfirstapp.fragments.main.ItemListPerPublisher"
+        android:label="ItemListPerPublisher" >
+        <action
+            android:id="@+id/action_itemListPerPublisher_to_itemDetailsFragment"
+            app:destination="@id/itemDetailsFragment" />
+    </fragment>
 
 
 </navigation>

@@ -79,6 +79,8 @@ class ItemDetailsFragment : BaseFragment {
         binding.chatBtn.setOnClickListener {
 
             mainViewModel.userLive.value?.let { customer ->
+
+                setScreenName(customer.name)
                 showLoading("Starting chat with seller..")
                 chatsViewModel.startChatWithForItem(customer, item) {
                     dismissLoading()
@@ -157,8 +159,6 @@ class ItemDetailsFragment : BaseFragment {
             .load(item.image)
             .into(binding.ItemImage)
 
-        (requireActivity() as AppCompatActivity)
-            .supportActionBar?.title = item.itemName
 
     }
 

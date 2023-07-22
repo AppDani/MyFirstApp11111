@@ -14,9 +14,8 @@ object UserRepository {
 
     val usersCollection: CollectionReference =
         FirebaseFirestore.getInstance().collection("users")
-    val userId: String by lazy {
-        FirebaseAuth.getInstance().uid!!
-    }
+
+
 
     fun listenFavorites(favorites: MutableLiveData<HashMap<String, FavoriteItem>>): ListenerRegistration? {
         val hashMap = HashMap<String, FavoriteItem>()
@@ -36,7 +35,6 @@ object UserRepository {
     fun listenTopSellers(liveData: MutableLiveData<List<AppUser>>) {
         usersCollection
             .orderBy("rating")
-            .whereGreaterThanOrEqualTo("rating",3)
             .limit(10)
             .addSnapshotListener { value, _ ->
                 val users = value?.toObjects(AppUser::class.java)
@@ -47,9 +45,12 @@ object UserRepository {
     }
 
     suspend fun getUser(): AppUser? {
-        return getUserById(userId)
+        return FirebaseAuth.getInstance().uid?.let {
+            getUserById(it)
+        }
     }
-    suspend fun getUserById(id:String): AppUser? {
+
+    suspend fun getUserById(id: String): AppUser? {
         return usersCollection.document(id)
             .get()
             .tryAwait()?.toObject(AppUser::class.java)
@@ -58,45 +59,53 @@ object UserRepository {
     fun listenToUser(
         userLiveData: MutableLiveData<AppUser>,
         exceptionLiveData: MutableLiveData<Exception>
-    ): ListenerRegistration {
-        return usersCollection.document(userId)
-            .addSnapshotListener { value, error ->
-                if (error != null) {
-                    exceptionLiveData.postValue(error)
-                    return@addSnapshotListener
+    ): ListenerRegistration? {
+        return FirebaseAuth.getInstance().uid?.let {
+            usersCollection.document(it)
+                .addSnapshotListener { value, error ->
+                    if (error != null) {
+                        exceptionLiveData.postValue(error)
+                        return@addSnapshotListener
+                    }
+                    value?.toObject(AppUser::class.java)?.let { user ->
+                        userLiveData.postValue(user)
+                    } ?: run {
+                        exceptionLiveData.postValue(
+                            java.lang.Exception("Unknown error occurred..")
+                        )
+                    }
                 }
-                value?.toObject(AppUser::class.java)?.let { user ->
-                    userLiveData.postValue(user)
-                } ?: run {
-                    exceptionLiveData.postValue(
-                        java.lang.Exception("Unknown error occurred..")
-                    )
-                }
-            }
+        }
     }
 
     suspend fun saveItem(item: ShoppingItem) {
-        val newRef = usersCollection.document(userId)
-            .collection("items")
-            .add(item)
-            .tryAwait()
-        newRef?.update("id", newRef.id)
+        FirebaseAuth.getInstance().uid?.let {
+            val newRef = usersCollection.document(it)
+                .collection("items")
+                .add(item)
+                .tryAwait()
+            newRef?.update("id", newRef.id)
+        }
     }
 
     suspend fun editItem(item: ShoppingItem) {
-        usersCollection.document(userId)
-            .collection("items")
-            .document(item.id!!)
-            .set(item)
-            .tryAwait()
+        FirebaseAuth.getInstance().uid?.let {
+            usersCollection.document(it)
+                .collection("items")
+                .document(item.id!!)
+                .set(item)
+                .tryAwait()
+        }
     }
 
     suspend fun deleteItem(shoppingItem: ShoppingItem) {
-        usersCollection.document(userId)
-            .collection("items")
-            .document(shoppingItem.id!!)
-            .delete()
-            .tryAwait()
+        FirebaseAuth.getInstance().uid?.let {
+            usersCollection.document(it)
+                .collection("items")
+                .document(shoppingItem.id!!)
+                .delete()
+                .tryAwait()
+        }
     }
 
     suspend fun getProducts(): List<ShoppingItem> {

@@ -80,6 +80,7 @@ class NewProfileFragment : BaseFragment, PictureConsumer {
                 binding.newProfileCreate.text = "Save Changes"
 
 
+
                 binding.newProfileFullName.setText(user.name)
                 binding.newProfileAddressCity.setText(user.address_city)
                 binding.newProfileAddress.setText(user.address)
@@ -162,7 +163,6 @@ class NewProfileFragment : BaseFragment, PictureConsumer {
         })
 
         lifecycleScope.launch {
-            println("Reach")
             // @TODO save the user with the image URI
             viewModel.saveUser(_user!!, imageByteArray, imageUri)
             dismissLoading()

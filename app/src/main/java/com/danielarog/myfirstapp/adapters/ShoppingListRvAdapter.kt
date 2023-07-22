@@ -25,7 +25,7 @@ class ShoppingListRvAdapter(
         fun bind(item: ShoppingItem, viewItem: () -> Unit) {
             itemNameTv.text = item.itemName
             itemPriceTv.text = "${item.price}$"
-            itemSizeTv.text = "L"
+            itemSizeTv.text = item.size
             itemPubNameTv.text = item.publisherName
 
             item.image?.let {

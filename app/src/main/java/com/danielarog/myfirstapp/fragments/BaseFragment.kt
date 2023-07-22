@@ -16,10 +16,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
@@ -29,6 +31,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import com.danielarog.myfirstapp.R
+import com.danielarog.myfirstapp.activities.BaseActivity
+import com.danielarog.myfirstapp.activities.MainActivity
+import com.danielarog.myfirstapp.dialogs.LoadingDialog
 import com.google.android.material.snackbar.Snackbar
 import java.io.ByteArrayOutputStream
 
@@ -109,7 +114,7 @@ fun Fragment.requestPermission(permission: String) {
 }
 
 abstract class BaseFragment : Fragment(), PictureChooser {
-    private var progressDialog: ProgressDialog? = null
+    private var progressDialog: LoadingDialog? = null
     lateinit var pictureResultLauncher: ActivityResultLauncher<Intent>
 
     override fun openGallery() {
@@ -147,14 +152,23 @@ abstract class BaseFragment : Fragment(), PictureChooser {
         }
     }
 
-    fun showLoading(message: String) {
+
+    fun setScreenName(name: String) {
+        val activityMain = activity as MainActivity
+        val toolbarThing = activityMain.findViewById<ConstraintLayout>(R.id.toolbar)
+        val sNameTv = toolbarThing.findViewById<TextView>(R.id.screenNameTv)
+        sNameTv.text = name
+    }
+
+
+    fun showLoading(message: String = "") {
         if (progressDialog == null) {
-            progressDialog = ProgressDialog(requireContext())
-            progressDialog!!.setCancelable(false)
-            progressDialog!!.setTitle("Shop")
+            progressDialog = LoadingDialog()
         }
-        progressDialog!!.setMessage(message)
-        progressDialog!!.show()
+        progressDialog?.show(
+            childFragmentManager,
+            "Loading"
+        )
     }
 
     fun dismissLoading() {
@@ -175,10 +189,8 @@ abstract class BaseFragment : Fragment(), PictureChooser {
     }
 
     fun back() {
-       findNavController(this).popBackStack()
+        findNavController(this).popBackStack()
     }
-
-
 
 
 }
